@@ -65,10 +65,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
             case R.id.setting:
-                Toast.makeText(getApplicationContext(), "설정 화면입니다.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "설정 버튼이 눌렸습니다.", Toast.LENGTH_LONG).show();
 
             case android.R.id.home: //toolbar의 back키 눌렀을 때 동작
-                Toast.makeText(getApplicationContext(), "뒤로 가기 버튼이 눌렸습니다.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "뒤로가기 버튼이 눌렸습니다.", Toast.LENGTH_LONG).show();
                 //finish();
                 return true;
 
