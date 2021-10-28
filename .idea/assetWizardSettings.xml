@@ -68,7 +68,8 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="imagePath" value="C:\Users\User\AppData\Local\Temp\baseline_menu_24.xml" />
+                                                <entry key="imagePath" value="C:\Users\User\AppData\Local\Temp\baseline_keyboard_voice_24.xml" />
+                                                <entry key="scalingPercent" value="99" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -79,7 +80,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material/icons/materialicons/menu/baseline_menu_24.xml" />
+                                                <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material/icons/materialicons/keyboard_voice/baseline_keyboard_voice_24.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -122,9 +123,8 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="backgroundAssetType" value="COLOR" />
-                                      <entry key="backgroundColor" value="553ddc" />
                                       <entry key="foregroundAssetType" value="CLIP_ART" />
+                                      <entry key="outputName" value="ic_mike" />
                                     </map>
                                   </option>
                                 </PersistentState>
