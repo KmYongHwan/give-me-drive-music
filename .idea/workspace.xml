@@ -27,7 +27,8 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7bc0f642-5c36-4970-960c-36e45193cd3e" name="Default Changelist" comment="">
+    <list default="true" id="b8eb2bf7-9b28-4522-8ebe-1ca9ca0341e4" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.7.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.7.1/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.7.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.7.1/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.7.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.7.1/fileHashes/fileHashes.bin" afterDir="false" />
@@ -36,11 +37,38 @@
       <change beforePath="$PROJECT_DIR$/.gradle/6.7.1/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.7.1/javaCompile/classAnalysis.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.7.1/javaCompile/jarAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.7.1/javaCompile/jarAnalysis.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.7.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.7.1/javaCompile/javaCompile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.7.1/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.7.1/javaCompile/taskHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/assetWizardSettings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/assetWizardSettings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/back-playstore.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/give_me_drive_music/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/give_me_drive_music/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/back.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/back_icon.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_launcher_background.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/navi_header.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/menu/menu.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/menu/menu.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/menu/navi_menu.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-hdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-hdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-mdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-mdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-xxhdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/dimens.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,29 +84,23 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="layoutResourceFile" />
-        <option value="valueResourceFile" />
         <option value="resourceFile" />
+        <option value="Kotlin Class" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectId" id="207rLR6rzgqTIySvVkXjZSLU0Yp" />
+  <component name="ProjectId" id="208jiuL1FJlQYCORS6jCUhbL9rI" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="last_directory_selection" value="$PROJECT_DIR$/app/src/main/res/drawable" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-  </component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\python\GitHub\give-me-drive-music\app\src\main\res\drawable" />
-    </key>
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../givemedirvemusic" />
+    <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
   </component>
   <component name="RunManager">
     <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
@@ -150,11 +172,11 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="7bc0f642-5c36-4970-960c-36e45193cd3e" name="Default Changelist" comment="" />
-      <created>1635406412241</created>
+      <changelist id="b8eb2bf7-9b28-4522-8ebe-1ca9ca0341e4" name="Default Changelist" comment="" />
+      <created>1635433240027</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1635406412241</updated>
+      <updated>1635433240027</updated>
     </task>
     <servers />
   </component>
@@ -168,44 +190,27 @@
         </entry>
       </map>
     </option>
-    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="1325" y="468" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1635415206403">
+    <state x="1221" y="503" key="AndroidCreateResourceDirectoryDialog" timestamp="1635433875251">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="1325" y="468" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.2560.1400/-1920.349.1920.1040@0.0.2560.1400" timestamp="1635415206403" />
-    <state x="1175" y="476" key="AndroidCreateResourceFileDialog" timestamp="1635415227361">
+    <state x="1221" y="503" key="AndroidCreateResourceDirectoryDialog/0.0.2560.1400/-1920.349.1920.1040@0.0.2560.1400" timestamp="1635433875251" />
+    <state x="1221" y="503" key="AndroidCreateResourceFileDialog" timestamp="1635434925858">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="1175" y="476" key="AndroidCreateResourceFileDialog/0.0.2560.1400/-1920.349.1920.1040@0.0.2560.1400" timestamp="1635415227361" />
-    <state x="1375" y="476" key="FileChooserDialogImpl" timestamp="1635414869015">
+    <state x="1221" y="503" key="AndroidCreateResourceFileDialog/0.0.2560.1400/-1920.349.1920.1040@0.0.2560.1400" timestamp="1635434925858" />
+    <state x="1760" y="559" key="FileChooserDialogImpl" timestamp="1635442411862">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="1375" y="476" key="FileChooserDialogImpl/0.0.2560.1400/-1920.349.1920.1040@0.0.2560.1400" timestamp="1635414869015" />
-    <state width="1873" height="353" key="GridCell.Tab.0.bottom" timestamp="1635413696620">
+    <state x="1760" y="559" key="FileChooserDialogImpl/0.0.2560.1400/-1920.349.1920.1040@0.0.2560.1400" timestamp="1635442411862" />
+    <state x="-1920" y="678" key="SettingsEditor" timestamp="1635442887339">
+      <screen x="-1920" y="349" width="1920" height="1040" />
+    </state>
+    <state x="-1920" y="678" key="SettingsEditor/0.0.2560.1400/-1920.349.1920.1040@-1920.349.1920.1040" timestamp="1635442887339" />
+    <state x="1371" y="507" key="extract.method.dialog" timestamp="1635440672333">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="1873" height="353" key="GridCell.Tab.0.bottom/0.0.2560.1400/-1920.349.1920.1040@0.0.2560.1400" timestamp="1635413696620" />
-    <state width="1873" height="353" key="GridCell.Tab.0.center" timestamp="1635413696620">
-      <screen x="0" y="0" width="2560" height="1400" />
-    </state>
-    <state width="1873" height="353" key="GridCell.Tab.0.center/0.0.2560.1400/-1920.349.1920.1040@0.0.2560.1400" timestamp="1635413696620" />
-    <state width="1873" height="353" key="GridCell.Tab.0.left" timestamp="1635413696620">
-      <screen x="0" y="0" width="2560" height="1400" />
-    </state>
-    <state width="1873" height="353" key="GridCell.Tab.0.left/0.0.2560.1400/-1920.349.1920.1040@0.0.2560.1400" timestamp="1635413696620" />
-    <state width="1873" height="353" key="GridCell.Tab.0.right" timestamp="1635413696620">
-      <screen x="0" y="0" width="2560" height="1400" />
-    </state>
-    <state width="1873" height="353" key="GridCell.Tab.0.right/0.0.2560.1400/-1920.349.1920.1040@0.0.2560.1400" timestamp="1635413696620" />
-    <state x="1315" y="441" key="RollbackChangesDialog" timestamp="1635410239204">
-      <screen x="0" y="0" width="2560" height="1400" />
-    </state>
-    <state x="1315" y="441" key="RollbackChangesDialog/0.0.2560.1400/-1920.349.1920.1040@0.0.2560.1400" timestamp="1635410239204" />
-    <state x="1389" y="499" key="chooseDestDirectoryDialog" timestamp="1635415215303">
-      <screen x="0" y="0" width="2560" height="1400" />
-    </state>
-    <state x="1389" y="499" key="chooseDestDirectoryDialog/0.0.2560.1400/-1920.349.1920.1040@0.0.2560.1400" timestamp="1635415215303" />
+    <state x="1371" y="507" key="extract.method.dialog/0.0.2560.1400/-1920.349.1920.1040@0.0.2560.1400" timestamp="1635440672333" />
   </component>
 </project>

@@ -1,6 +1,5 @@
 package com.example.give_me_drive_music;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -9,6 +8,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -16,7 +16,9 @@ import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private DrawerLayout mDrawerLayout;
+    Toolbar myToolbar;
+    DrawerLayout drawer;
+    NavigationView navigationView;
     private Context context = this;
 
     @Override
@@ -24,55 +26,64 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayShowTitleEnabled(false); // 기존 title 지우기
-        actionBar.setDisplayHomeAsUpEnabled(true); // 뒤로가기 버튼 만들기
+        //상단 툴바 설정
+        myToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(myToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_launcher_foreground);
+        getSupportActionBar().setTitle("노래 추천 앱");
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawerLayout);
+        navigationView = (NavigationView) findViewById(R.id.navigationView);
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 menuItem.setChecked(true);
-                mDrawerLayout.closeDrawers();
+                drawer.closeDrawers();
 
                 int id = menuItem.getItemId();
                 String title = menuItem.getTitle().toString();
 
                 if(id == R.id.survey){
-                    Toast.makeText(context, title + ": 설문조사 화면으로 이동합니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "설문조사 화면으로 이동합니다.", Toast.LENGTH_SHORT).show();
                 }
 
                 else if(id == R.id.feedback){
-                    Toast.makeText(context, title + ": 피드백 현황 화면으로 이동합니다", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "피드백 현황 화면으로 이동합니다", Toast.LENGTH_SHORT).show();
                 }
 
                 return true;
             }
         });
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return super.onCreateOptionsMenu(menu);
+        //return super.onCreateOptionsMenu(menu);
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu, menu);
+        return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        switch (item.getItemId()){
-            case R.id.setting:
-                Toast.makeText(getApplicationContext(), "설정 버튼이 눌렸습니다.", Toast.LENGTH_LONG).show();
-
-            case android.R.id.home: //toolbar의 back키 눌렀을 때 동작
-                Toast.makeText(getApplicationContext(), "뒤로가기 버튼이 눌렸습니다.", Toast.LENGTH_LONG).show();
-                //finish();
+    public boolean onOptionsItemSelected(MenuItem item) {
+        //return super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                drawer.openDrawer(GravityCompat.START);
                 return true;
 
+
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                Toast.makeText(getApplicationContext(), "나머지 버튼 클릭됨", Toast.LENGTH_LONG).show();
+                return super.onOptionsItemSelected(item);
+
         }
-        return super.onOptionsItemSelected(item);
     }
+
 }
