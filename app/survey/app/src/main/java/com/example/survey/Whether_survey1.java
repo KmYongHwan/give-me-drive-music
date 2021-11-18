@@ -101,6 +101,7 @@ public class Whether_survey1 extends AppCompatActivity {
                 break;
         }
     }
+
     public boolean IsExistID(){
         boolean IsExist = arrayIndex.contains(que);
         return IsExist;
@@ -117,6 +118,7 @@ public class Whether_survey1 extends AppCompatActivity {
         childUpdates.put("/survey_test/" + que, postValues);
         mPostReference.updateChildren(childUpdates);
     }
+
     //라디오 그룹 클릭 리스너
     RadioGroup.OnCheckedChangeListener radioGroupButtonChangeListener = new RadioGroup.OnCheckedChangeListener(){
         @Override

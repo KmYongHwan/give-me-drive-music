@@ -1,5 +1,6 @@
 package com.example.survey;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -34,12 +35,24 @@ import java.util.Locale;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
+
+    private DatabaseReference mPostReference;
+
     Toolbar toolbar;
+
     private Button btVoice;
     private TextView txVoice;
     private final int myVoiceCode = 1234;
 
-    private DatabaseReference mPostReference;
+    private TextView txData;
+    private Button btData;
+
+    Long que;
+    String ans;
+    String sort = "que";
+    ArrayAdapter<String> arrayAdapter;
+    static ArrayList<String> arrayIndex = new ArrayList<>();
+    static ArrayList<String> arrayData = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +70,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 startVoiceIntent();
+            }
+        });
+
+        btData = findViewById(R.id.dataBtn);
+
+        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
+        ListView listView = (ListView) findViewById(R.id.db_list_view);
+        listView.setAdapter(arrayAdapter);
+
+        btData.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                getFirebaseDatabase();
             }
         });
     }
@@ -84,13 +110,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu, menu);
-        return true;
-    }
-
     private void FuncVoiceOrderCheck(String VoiceMsg){
         if(VoiceMsg.length() < 1) return;
         if(VoiceMsg.indexOf("메뉴") > -1){
@@ -98,6 +117,13 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), SurveyActivity.class);
             startActivity(intent);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu, menu);
+        return true;
     }
 
     @Override
@@ -115,5 +141,46 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+
+    public void getFirebaseDatabase(){
+        ValueEventListener postListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.e("getFirebaseDatabase", "key: " + dataSnapshot.getChildrenCount());
+                arrayData.clear();
+                arrayIndex.clear();
+                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                    String key = postSnapshot.getKey();
+                    Firebase get = postSnapshot.getValue(Firebase.class);
+                    String[] info = {String.valueOf(get.que), get.ans};
+                    String Result = setTextLength(info[0],10) + setTextLength(info[1],10);
+                    arrayData.add(Result);
+                    arrayIndex.add(key);
+                    Log.d("getFirebaseDatabase", "key: " + key);
+                    Log.d("getFirebaseDatabase", "info: " + info[0] + info[1]);
+                }
+                arrayAdapter.clear();
+                arrayAdapter.addAll(arrayData);
+                arrayAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("getFirebaseDatabase","loadPost:onCancelled", databaseError.toException());
+            }
+        };
+        Query sortbyAge = FirebaseDatabase.getInstance().getReference().child("survey_test").orderByChild(sort);
+        sortbyAge.addListenerForSingleValueEvent(postListener);
+    }
+
+    public String setTextLength(String text, int length){
+        if(text.length()<length){
+            int gap = length - text.length();
+            for (int i=0; i<gap; i++){
+                text = text + " ";
+            }
+        }
+        return text;
     }
 }
