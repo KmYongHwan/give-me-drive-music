@@ -35,9 +35,7 @@ import java.util.Locale;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-
     private DatabaseReference mPostReference;
-
     Toolbar toolbar;
 
     private Button btVoice;
@@ -65,24 +63,10 @@ public class MainActivity extends AppCompatActivity {
         btVoice = findViewById(R.id.voice);
         txVoice = findViewById(R.id.textView);
 
-
         btVoice.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 startVoiceIntent();
-            }
-        });
-
-        btData = findViewById(R.id.dataBtn);
-
-        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
-        ListView listView = (ListView) findViewById(R.id.db_list_view);
-        listView.setAdapter(arrayAdapter);
-
-        btData.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                getFirebaseDatabase();
             }
         });
     }
@@ -105,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == myVoiceCode && resultCode == RESULT_OK && data != null){
             String msg = getRecogStr(data);
-            //txVoice.setText(msg);
+            txVoice.setText(msg);
             FuncVoiceOrderCheck(msg);
         }
     }
@@ -137,50 +121,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
 
+            case R.id.menu_survey_result:
+                finish();
+                Intent intent2 = new Intent(getApplicationContext(), SurveyResultActivity.class);
+                startActivity(intent2);
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
 
         }
-    }
-
-    public void getFirebaseDatabase(){
-        ValueEventListener postListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.e("getFirebaseDatabase", "key: " + dataSnapshot.getChildrenCount());
-                arrayData.clear();
-                arrayIndex.clear();
-                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
-                    String key = postSnapshot.getKey();
-                    Firebase get = postSnapshot.getValue(Firebase.class);
-                    String[] info = {String.valueOf(get.que), get.ans};
-                    String Result = setTextLength(info[0],10) + setTextLength(info[1],10);
-                    arrayData.add(Result);
-                    arrayIndex.add(key);
-                    Log.d("getFirebaseDatabase", "key: " + key);
-                    Log.d("getFirebaseDatabase", "info: " + info[0] + info[1]);
-                }
-                arrayAdapter.clear();
-                arrayAdapter.addAll(arrayData);
-                arrayAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.w("getFirebaseDatabase","loadPost:onCancelled", databaseError.toException());
-            }
-        };
-        Query sortbyAge = FirebaseDatabase.getInstance().getReference().child("survey_test").orderByChild(sort);
-        sortbyAge.addListenerForSingleValueEvent(postListener);
-    }
-
-    public String setTextLength(String text, int length){
-        if(text.length()<length){
-            int gap = length - text.length();
-            for (int i=0; i<gap; i++){
-                text = text + " ";
-            }
-        }
-        return text;
     }
 }

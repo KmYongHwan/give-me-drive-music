@@ -19,6 +19,8 @@
 
         <activity android:name=".SurveyActivity">
         </activity>
+        <activity android:name=".SurveyResultActivity">
+        </activity>
 
         <activity android:name=".Whether_survey1">
         </activity>
@@ -51,6 +53,14 @@
         <activity android:name=".Time_survey3">
         </activity>
         <activity android:name=".Time_survey4">
+        </activity>
+        <activity android:name=".Traffic_survey1">
+        </activity>
+        <activity android:name=".Traffic_survey2">
+        </activity>
+        <activity android:name=".Traffic_survey3">
+        </activity>
+        <activity android:name=".Traffic_survey4">
         </activity>
         <activity android:name=".Mood_survey1">
         </activity>

@@ -78,7 +78,7 @@ public class Mood_survey1 extends AppCompatActivity {
         {
             case R.id.btn_before:
                 finish();
-                Intent intent1 = new Intent(getApplicationContext(), Time_survey4.class);
+                Intent intent1 = new Intent(getApplicationContext(), Traffic_survey4.class);
                 startActivity(intent1);
                 break;
 

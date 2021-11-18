@@ -25,12 +25,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Time_survey4 extends AppCompatActivity {
+public class Traffic_survey2 extends AppCompatActivity {
     Toolbar toolbar;
     private RadioGroup radioGroup;
     private DatabaseReference mPostReference;
 
-    Long que = 15L;
+    Long que = 17L;
     String ans;
 
     static ArrayList<String> arrayIndex =  new ArrayList<String>();
@@ -39,7 +39,7 @@ public class Time_survey4 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.time_survey4);
+        setContentView(R.layout.traffic_survey2);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -78,7 +78,7 @@ public class Time_survey4 extends AppCompatActivity {
         {
             case R.id.btn_before:
                 finish();
-                Intent intent1 = new Intent(getApplicationContext(), Time_survey3.class);
+                Intent intent1 = new Intent(getApplicationContext(), Traffic_survey1.class);
                 startActivity(intent1);
                 break;
 
@@ -90,7 +90,7 @@ public class Time_survey4 extends AppCompatActivity {
 
             case R.id.btn_next:
                 finish();
-                Intent intent3 = new Intent(getApplicationContext(), Traffic_survey1.class);
+                Intent intent3 = new Intent(getApplicationContext(), Traffic_survey3.class);
                 startActivity(intent3);
                 break;
         }
@@ -118,62 +118,62 @@ public class Time_survey4 extends AppCompatActivity {
             if(i == R.id.btn_1){
                 ans = "excited";
                 postFirebaseDatabase(true);
-                Toast.makeText(Time_survey4.this, "1 입력됐습니다", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Traffic_survey2.this, "1 입력됐습니다", Toast.LENGTH_SHORT).show();
             }
             else if(i == R.id.btn_2){
                 ans = "delighted";
                 postFirebaseDatabase(true);
-                Toast.makeText(Time_survey4.this, "2 입력됐습니다", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Traffic_survey2.this, "2 입력됐습니다", Toast.LENGTH_SHORT).show();
             }
             else if(i == R.id.btn_3){
                 ans = "happy";
                 postFirebaseDatabase(true);
-                Toast.makeText(Time_survey4.this, "3 입력됐습니다", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Traffic_survey2.this, "3 입력됐습니다", Toast.LENGTH_SHORT).show();
             }
             else if(i == R.id.btn_4){
                 ans = "content";
                 postFirebaseDatabase(true);
-                Toast.makeText(Time_survey4.this, "4 입력됐습니다", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Traffic_survey2.this, "4 입력됐습니다", Toast.LENGTH_SHORT).show();
             }
             else if(i == R.id.btn_5){
                 ans = "relaxed";
                 postFirebaseDatabase(true);
-                Toast.makeText(Time_survey4.this, "5 입력됐습니다", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Traffic_survey2.this, "5 입력됐습니다", Toast.LENGTH_SHORT).show();
             }
             else if(i == R.id.btn_6){
                 ans = "calm";
                 postFirebaseDatabase(true);
-                Toast.makeText(Time_survey4.this, "6 입력됐습니다", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Traffic_survey2.this, "6 입력됐습니다", Toast.LENGTH_SHORT).show();
             }
             else if(i == R.id.btn_7){
                 ans = "tired";
                 postFirebaseDatabase(true);
-                Toast.makeText(Time_survey4.this, "7 입력됐습니다", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Traffic_survey2.this, "7 입력됐습니다", Toast.LENGTH_SHORT).show();
             }
             else if(i == R.id.btn_8){
                 ans = "bored";
                 postFirebaseDatabase(true);
-                Toast.makeText(Time_survey4.this, "8 입력됐습니다", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Traffic_survey2.this, "8 입력됐습니다", Toast.LENGTH_SHORT).show();
             }
             else if(i == R.id.btn_9){
                 ans = "depressed";
                 postFirebaseDatabase(true);
-                Toast.makeText(Time_survey4.this, "9 입력됐습니다", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Traffic_survey2.this, "9 입력됐습니다", Toast.LENGTH_SHORT).show();
             }
             else if(i == R.id.btn_10){
                 ans = "frustrated";
                 postFirebaseDatabase(true);
-                Toast.makeText(Time_survey4.this, "10 입력됐습니다", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Traffic_survey2.this, "10 입력됐습니다", Toast.LENGTH_SHORT).show();
             }
             else if(i == R.id.btn_11){
                 ans = "angry";
                 postFirebaseDatabase(true);
-                Toast.makeText(Time_survey4.this, "11 입력됐습니다", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Traffic_survey2.this, "11 입력됐습니다", Toast.LENGTH_SHORT).show();
             }
             else{
                 ans = "tense";
                 postFirebaseDatabase(true);
-                Toast.makeText(Time_survey4.this, "12 입력됐습니다", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Traffic_survey2.this, "12 입력됐습니다", Toast.LENGTH_SHORT).show();
             }
         }
     };

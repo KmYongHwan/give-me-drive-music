@@ -6,4 +6,12 @@
         android:title="설문"
         app:showAsAction="never"/>
 
+    <item android:id="@+id/menu_survey_result"
+        android:title="설문 결과"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/menu_setting"
+        android:title="환경설정"
+        app:showAsAction="never"/>
+
 </menu>
