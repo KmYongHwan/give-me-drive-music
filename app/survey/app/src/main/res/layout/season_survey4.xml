@@ -10,7 +10,18 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        android:elevation="4dp"/>
+        android:elevation="4dp">
+
+        <TextView
+            android:id="@+id/textView28"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Toolbar Title"
+            android:layout_gravity="center"
+            android:textColor="#000000"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+    </androidx.appcompat.widget.Toolbar>
 
     <RadioGroup
         android:id="@+id/radio_group"
@@ -27,6 +38,7 @@
             android:layout_height="wrap_content"
             android:text="겨울엔 대체로 어떤 기분이신가요?"
             android:textSize="20dp"
+            android:layout_margin="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -119,13 +131,13 @@
             android:text="긴장함" />
     </RadioGroup>
 
-    <Button
+    <ImageButton
         android:id="@+id/btn_before"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:background="@drawable/round_background"
+        android:src="@drawable/left"
         android:onClick="clickHandler"
-        android:text="이전 화면"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.049"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -133,13 +145,13 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.976" />
 
-    <Button
+    <ImageButton
         android:id="@+id/btn_home"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:background="@drawable/round_background"
         android:onClick="clickHandler"
-        android:text="홈 화면"
+        android:src="@drawable/home"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -147,18 +159,18 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.976" />
 
-    <Button
+    <ImageButton
         android:id="@+id/btn_next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="다음 화면"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:background="@drawable/round_background"
+        android:src="@drawable/right"
+        android:onClick="clickHandler"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.95"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.976"
-        android:onClick="clickHandler"/>
+        app:layout_constraintVertical_bias="0.976"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

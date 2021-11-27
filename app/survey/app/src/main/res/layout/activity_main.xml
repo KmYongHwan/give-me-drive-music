@@ -11,7 +11,19 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        android:elevation="4dp" />
+        android:elevation="4dp">
+
+        <TextView
+            android:id="@+id/textView28"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Toolbar Title"
+            android:layout_gravity="center"
+            android:textColor="#000000"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+    </androidx.appcompat.widget.Toolbar>
+
 
     <Button
         android:id="@+id/voice"
@@ -19,16 +31,17 @@
         android:layout_height="50dp"
         android:background="@drawable/ic_launcher_foreground"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.955"
+        app:layout_constraintHorizontal_bias="0.972"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.976" />
+        app:layout_constraintVertical_bias="0.961" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="290dp"
         android:layout_height="500dp"
+        android:text="카메라"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -36,39 +49,19 @@
         app:layout_constraintTop_toTopOf="parent"
          />
 
+
     <Button
         android:id="@+id/dataBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:background="@drawable/round_background"
         android:text="추천"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.049"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.976" />
+        app:layout_constraintVertical_bias="0.962" />
 
-
-
-
-    <ScrollView
-        android:id="@+id/scroll_view"
-        android:layout_width="368dp"
-        android:layout_height="495dp"
-        android:layout_marginTop="5dp"
-        android:fillViewport="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.329">
-
-        <ListView
-            android:id="@+id/db_list_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"></ListView>
-
-    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

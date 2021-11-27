@@ -101,10 +101,9 @@ public class MainActivity extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
-
-
 
         getFirebaseDatabase();
         getFirebaseDatabase2();
@@ -117,9 +116,6 @@ public class MainActivity extends AppCompatActivity {
         for(String str: db_data){
             db_data_string += str+" ";
         }
-
-
-
 
         btRecom = findViewById(R.id.dataBtn);
         btVoice = findViewById(R.id.voice);
@@ -135,14 +131,12 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-
         mHandler = new Handler();
 
         //et = (EditText) findViewById(R.id.EditText01);
         Button btn = (Button) findViewById(R.id.dataBtn);
         //final TextView tv = (TextView)findViewById(R.id.TextView01);
         msgTV = (TextView)findViewById(R.id.textView);
-
 
         btRecom.setOnClickListener(new View.OnClickListener(){
             @Override

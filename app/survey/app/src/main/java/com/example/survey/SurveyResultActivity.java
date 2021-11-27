@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,7 +30,7 @@ public class SurveyResultActivity extends AppCompatActivity {
     private DatabaseReference mPostReference;
 
     private Button btData;
-    private Button bthome;
+    private ImageButton bthome;
 
     Long que;
     String ans;
@@ -54,6 +55,7 @@ public class SurveyResultActivity extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         btData = findViewById(R.id.dataBtn);
 

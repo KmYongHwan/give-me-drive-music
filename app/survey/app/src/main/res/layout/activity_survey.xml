@@ -10,7 +10,18 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        android:elevation="4dp"/>
+        android:elevation="4dp">
+
+        <TextView
+            android:id="@+id/textView28"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Toolbar Title"
+            android:layout_gravity="center"
+            android:textColor="#000000"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+    </androidx.appcompat.widget.Toolbar>
 
     <TextView
         android:layout_width="wrap_content"
@@ -22,12 +33,12 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <ImageButton
         android:id="@+id/btn_home"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="홈 화면"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:background="@drawable/round_background"
+        android:src="@drawable/home"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.055"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -38,9 +49,9 @@
 
     <Button
         android:id="@+id/btn_next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:background="@drawable/round_background"
         android:text="설문 시작"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.95"

@@ -43,6 +43,7 @@ public class Whether_survey5 extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         radioGroup = (RadioGroup) findViewById(R.id.radio_group);
         radioGroup.setOnCheckedChangeListener(radioGroupButtonChangeListener);

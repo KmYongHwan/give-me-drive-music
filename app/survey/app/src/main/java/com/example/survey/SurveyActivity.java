@@ -25,6 +25,7 @@ public class SurveyActivity extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
     @Override

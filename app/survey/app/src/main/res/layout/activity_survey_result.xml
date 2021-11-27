@@ -11,13 +11,25 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        android:elevation="4dp" />
+        android:elevation="4dp">
 
-    <Button
+        <TextView
+            android:id="@+id/textView28"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Toolbar Title"
+            android:layout_gravity="center"
+            android:textColor="#000000"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <ImageButton
         android:id="@+id/home"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="홈으로"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:background="@drawable/round_background"
+        android:src="@drawable/home"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.075"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -27,9 +39,10 @@
 
     <Button
         android:id="@+id/dataBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="데이터 불러오기"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:background="@drawable/round_background"
+        android:text="데이터 "
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.928"
         app:layout_constraintLeft_toLeftOf="parent"
