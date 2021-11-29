@@ -13,6 +13,7 @@
         <entry key="..\:/python/GitHub/survey/app/src/main/res/drawable/left.xml" value="0.5697916666666667" />
         <entry key="..\:/python/GitHub/survey/app/src/main/res/drawable/right.xml" value="0.5697916666666667" />
         <entry key="..\:/python/GitHub/survey/app/src/main/res/drawable/round_background.xml" value="0.5697916666666667" />
+        <entry key="..\:/python/GitHub/survey/app/src/main/res/layout/activity_launch.xml" value="0.16894630192502533" />
         <entry key="..\:/python/GitHub/survey/app/src/main/res/layout/activity_listitem.xml" value="0.2028985507246377" />
         <entry key="..\:/python/GitHub/survey/app/src/main/res/layout/activity_main.xml" value="0.23731884057971014" />
         <entry key="..\:/python/GitHub/survey/app/src/main/res/layout/activity_survey.xml" value="0.23731884057971014" />
@@ -34,6 +35,7 @@
         <entry key="..\:/python/GitHub/survey/app/src/main/res/layout/season_survey2.xml" value="0.23731884057971014" />
         <entry key="..\:/python/GitHub/survey/app/src/main/res/layout/season_survey3.xml" value="0.23731884057971014" />
         <entry key="..\:/python/GitHub/survey/app/src/main/res/layout/season_survey4.xml" value="0.23731884057971014" />
+        <entry key="..\:/python/GitHub/survey/app/src/main/res/layout/surfaceview.xml" value="0.16894630192502533" />
         <entry key="..\:/python/GitHub/survey/app/src/main/res/layout/temp_survey1.xml" value="0.23731884057971014" />
         <entry key="..\:/python/GitHub/survey/app/src/main/res/layout/temp_survey2.xml" value="0.23731884057971014" />
         <entry key="..\:/python/GitHub/survey/app/src/main/res/layout/temp_survey3.xml" value="0.23731884057971014" />
