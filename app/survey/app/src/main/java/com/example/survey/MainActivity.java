@@ -8,18 +8,44 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.annotation.TargetApi;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.ImageFormat;
 import android.hardware.Camera;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraCaptureSession;
+import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
 import android.content.Intent;
+import android.hardware.camera2.CameraManager;
+import android.hardware.camera2.CameraMetadata;
+import android.hardware.camera2.CaptureFailure;
+import android.hardware.camera2.CaptureRequest;
+import android.hardware.camera2.CaptureResult;
+import android.hardware.camera2.TotalCaptureResult;
+import android.hardware.camera2.params.StreamConfigurationMap;
+import android.media.ExifInterface;
+import android.media.Image;
+import android.media.ImageReader;
 import android.media.MediaRecorder;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.HandlerThread;
+import android.provider.MediaStore;
 import android.speech.RecognizerIntent;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.Size;
+import android.util.SparseIntArray;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -31,6 +57,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.AdapterView;
@@ -46,6 +73,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.OutputStream;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -65,21 +94,33 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import android.graphics.Matrix;
 
-public class MainActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback{
+public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG = "android_camera_example";
-    private static final int PERMISSIONS_REQUEST_CODE = 100;
-    String[] REQUIRED_PERMISSIONS  = {android.Manifest.permission.CAMERA,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE};
-    private static final int CAMERA_FACING = Camera.CameraInfo.CAMERA_FACING_BACK; // Camera.CameraInfo.CAMERA_FACING_FRONT
-
-    private SurfaceView surfaceView;
-    private CameraPreview mCameraPreview;
-    private View mLayout;  // Snackbar 사용하기 위해서는 View가 필요합니다.
-    // (참고로 Toast에서는 Context가 필요했습니다.)
-
+    private SurfaceView mSurfaceView;
+    private SurfaceHolder mSurfaceViewHolder;
     private Handler mHandler;
+    private ImageReader mImageReader;
+    private CameraDevice mCameraDevice;
+    private CaptureRequest.Builder mPreviewBuilder;
+    private CameraCaptureSession mSession;
+    private int mDeviceRotation;
+    private Sensor mAccelerometer;
+    private Sensor mMagnetometer;
+    private SensorManager mSensorManager;
+    private DeviceOrientation deviceOrientation;
+    int mDSI_height, mDSI_width;
+
+    private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
+    static {
+        ORIENTATIONS.append(ExifInterface.ORIENTATION_NORMAL, 0);
+        ORIENTATIONS.append(ExifInterface.ORIENTATION_ROTATE_90, 90);
+        ORIENTATIONS.append(ExifInterface.ORIENTATION_ROTATE_180, 180);
+        ORIENTATIONS.append(ExifInterface.ORIENTATION_ROTATE_270, 270);
+    }
+
+    private Handler mHandler2;
     Socket socket;
     private String ip = "192.168.0.2";
     private int port = 5050;
@@ -130,67 +171,21 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
 
         setContentView(R.layout.activity_main);
 
-        mLayout = findViewById(R.id.layout_main);
-        surfaceView = findViewById(R.id.camera_preview_main);
-
-
-        // 런타임 퍼미션 완료될때 까지 화면에서 보이지 않게 해야합니다.
-        surfaceView.setVisibility(View.GONE);
-
-        Button button = findViewById(R.id.button_main_capture);
+        Button button = findViewById(R.id.take_photo);
         button.setOnClickListener(new View.OnClickListener() {
-
             @Override
-            public void onClick(View v) {
-                mCameraPreview.takePicture();
+            public void onClick(View view) {
+                takePicture();
             }
         });
 
-        if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
+        mSurfaceView = findViewById(R.id.surfaceView);
+        mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mMagnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+        deviceOrientation = new DeviceOrientation();
 
-            int cameraPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
-            int writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-
-            if ( cameraPermission == PackageManager.PERMISSION_GRANTED
-                    && writeExternalStoragePermission == PackageManager.PERMISSION_GRANTED) {
-                startCamera();
-
-
-            }else {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this, REQUIRED_PERMISSIONS[0])
-                        || ActivityCompat.shouldShowRequestPermissionRationale(this, REQUIRED_PERMISSIONS[1])) {
-
-                    Snackbar.make(mLayout, "이 앱을 실행하려면 카메라와 외부 저장소 접근 권한이 필요합니다.",
-                            Snackbar.LENGTH_INDEFINITE).setAction("확인", new View.OnClickListener() {
-
-                        @Override
-                        public void onClick(View view) {
-                            ActivityCompat.requestPermissions( MainActivity.this, REQUIRED_PERMISSIONS,
-                                    PERMISSIONS_REQUEST_CODE);
-                        }
-                    }).show();
-                } else {
-                    // 2. 사용자가 퍼미션 거부를 한 적이 없는 경우에는 퍼미션 요청을 바로 합니다.
-                    // 요청 결과는 onRequestPermissionResult에서 수신됩니다.
-                    ActivityCompat.requestPermissions( this, REQUIRED_PERMISSIONS,
-                            PERMISSIONS_REQUEST_CODE);
-                }
-            }
-        } else {
-
-            final Snackbar snackbar = Snackbar.make(mLayout, "디바이스가 카메라를 지원하지 않습니다.",
-                    Snackbar.LENGTH_INDEFINITE);
-            snackbar.setAction("확인", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    snackbar.dismiss();
-                }
-            });
-            snackbar.show();
-        }
-
-
+        initSurfaceView();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -220,7 +215,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
             }
         });
 
-        mHandler = new Handler();
+        mHandler2 = new Handler();
 
         //et = (EditText) findViewById(R.id.EditText01);
         Button btn = (Button) findViewById(R.id.dataBtn);
@@ -260,47 +255,329 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         });
     }
 
-    void startCamera(){
-        // Create the Preview view and set it as the content of this Activity.
-        mCameraPreview = new CameraPreview(this, this, CAMERA_FACING, surfaceView);
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        mSensorManager.registerListener(deviceOrientation.getEventListener(), mAccelerometer, SensorManager.SENSOR_DELAY_UI);
+        mSensorManager.registerListener(deviceOrientation.getEventListener(), mMagnetometer, SensorManager.SENSOR_DELAY_UI);
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grandResults) {
-        if ( requestCode == PERMISSIONS_REQUEST_CODE && grandResults.length == REQUIRED_PERMISSIONS.length) {
-            boolean check_result = true;
-            for (int result : grandResults) {
-                if (result != PackageManager.PERMISSION_GRANTED) {
-                    check_result = false;
-                    break;
+    protected void onPause() {
+        super.onPause();
+
+        mSensorManager.unregisterListener(deviceOrientation.getEventListener());
+    }
+
+    public void initSurfaceView() {
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        mDSI_height = displayMetrics.heightPixels;
+        mDSI_width = displayMetrics.widthPixels;
+
+
+        mSurfaceViewHolder = mSurfaceView.getHolder();
+        mSurfaceViewHolder.addCallback(new SurfaceHolder.Callback() {
+
+            @Override
+            public void surfaceCreated(SurfaceHolder holder) {
+                initCameraAndPreview();
+            }
+
+            @Override
+            public void surfaceDestroyed(SurfaceHolder holder) {
+
+                if (mCameraDevice != null) {
+                    mCameraDevice.close();
+                    mCameraDevice = null;
                 }
             }
-            if ( check_result ) {
-                startCamera();
+
+            @Override
+            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
             }
-            else {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this, REQUIRED_PERMISSIONS[0])
-                        || ActivityCompat.shouldShowRequestPermissionRationale(this, REQUIRED_PERMISSIONS[1])) {
-                    Snackbar.make(mLayout, "퍼미션이 거부되었습니다. 앱을 다시 실행하여 퍼미션을 허용해주세요. ",
-                            Snackbar.LENGTH_INDEFINITE).setAction("확인", new View.OnClickListener() {
 
-                        @Override
-                        public void onClick(View view) {
-                            finish();
-                        }
-                    }).show();
-                }else {
-                    Snackbar.make(mLayout, "설정(앱 정보)에서 퍼미션을 허용해야 합니다. ",
-                            Snackbar.LENGTH_INDEFINITE).setAction("확인", new View.OnClickListener() {
 
-                        @Override
-                        public void onClick(View view) {
-                            finish();
-                        }
-                    }).show();
-                }
+        });
+    }
+
+
+    @TargetApi(21)
+    public void initCameraAndPreview() {
+        HandlerThread handlerThread = new HandlerThread("CAMERA2");
+        handlerThread.start();
+        mHandler = new Handler(handlerThread.getLooper());
+        Handler mainHandler = new Handler(getMainLooper());
+        try {
+            String mCameraId = "" + CameraCharacteristics.LENS_FACING_FRONT; // 후면 카메라 사용
+
+            CameraManager mCameraManager = (CameraManager) this.getSystemService(Context.CAMERA_SERVICE);
+            CameraCharacteristics characteristics = mCameraManager.getCameraCharacteristics(mCameraId);
+            StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
+
+            Size largestPreviewSize = map.getOutputSizes(ImageFormat.JPEG)[0];
+            Log.i("LargestSize", largestPreviewSize.getWidth() + " " + largestPreviewSize.getHeight());
+
+            setAspectRatioTextureView(largestPreviewSize.getHeight(),largestPreviewSize.getWidth());
+
+            mImageReader = ImageReader.newInstance(largestPreviewSize.getWidth(), largestPreviewSize.getHeight(), ImageFormat.JPEG,/*maxImages*/7);
+            mImageReader.setOnImageAvailableListener(mOnImageAvailableListener, mainHandler);
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            mCameraManager.openCamera(mCameraId, deviceStateCallback, mHandler);
+        } catch (CameraAccessException e) {
+            Toast.makeText(this, "카메라를 열지 못했습니다.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    private ImageReader.OnImageAvailableListener mOnImageAvailableListener = new ImageReader.OnImageAvailableListener() {
+        @Override
+        public void onImageAvailable(ImageReader reader) {
+
+            Image image = reader.acquireNextImage();
+            ByteBuffer buffer = image.getPlanes()[0].getBuffer();
+            byte[] bytes = new byte[buffer.remaining()];
+            buffer.get(bytes);
+            final Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            new SaveImageTask().execute(bitmap);
+        }
+    };
+
+
+    private CameraDevice.StateCallback deviceStateCallback = new CameraDevice.StateCallback() {
+        @Override
+        public void onOpened(CameraDevice camera) {
+            mCameraDevice = camera;
+            try {
+                takePreview();
+            } catch (CameraAccessException e) {
+                e.printStackTrace();
             }
         }
+
+        @Override
+        public void onDisconnected(@NonNull CameraDevice camera) {
+            if (mCameraDevice != null) {
+                mCameraDevice.close();
+                mCameraDevice = null;
+            }
+        }
+
+        @Override
+        public void onError(CameraDevice camera, int error) {
+            Toast.makeText(MainActivity.this, "카메라를 열지 못했습니다.", Toast.LENGTH_SHORT).show();
+        }
+    };
+
+
+    public void takePreview() throws CameraAccessException {
+        mPreviewBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
+        mPreviewBuilder.addTarget(mSurfaceViewHolder.getSurface());
+        mCameraDevice.createCaptureSession(Arrays.asList(mSurfaceViewHolder.getSurface(), mImageReader.getSurface()), mSessionPreviewStateCallback, mHandler);
+    }
+
+    private CameraCaptureSession.StateCallback mSessionPreviewStateCallback = new CameraCaptureSession.StateCallback() {
+        @Override
+        public void onConfigured(@NonNull CameraCaptureSession session) {
+            mSession = session;
+
+            try {
+
+                mPreviewBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
+                mPreviewBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
+                mSession.setRepeatingRequest(mPreviewBuilder.build(), null, mHandler);
+            } catch (CameraAccessException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onConfigureFailed(@NonNull CameraCaptureSession session) {
+            Toast.makeText(MainActivity.this, "카메라 구성 실패", Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    private CameraCaptureSession.CaptureCallback mSessionCaptureCallback = new CameraCaptureSession.CaptureCallback() {
+        @Override
+        public void onCaptureCompleted(CameraCaptureSession session, CaptureRequest request, TotalCaptureResult result) {
+            mSession = session;
+            unlockFocus();
+        }
+
+        @Override
+        public void onCaptureProgressed(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull CaptureResult partialResult) {
+            mSession = session;
+        }
+
+        @Override
+        public void onCaptureFailed(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull CaptureFailure failure) {
+            super.onCaptureFailed(session, request, failure);
+        }
+    };
+
+
+
+    public void takePicture() {
+
+        try {
+            CaptureRequest.Builder captureRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);//用来设置拍照请求的request
+            captureRequestBuilder.addTarget(mImageReader.getSurface());
+            captureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
+            captureRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
+
+
+            // 화면 회전 안되게 고정시켜 놓은 상태에서는 아래 로직으로 방향을 얻을 수 없어서
+            // 센서를 사용하는 것으로 변경
+            //deviceRotation = getResources().getConfiguration().orientation;
+            mDeviceRotation = ORIENTATIONS.get(deviceOrientation.getOrientation());
+            Log.d("@@@", mDeviceRotation+"");
+
+            captureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION, mDeviceRotation);
+            CaptureRequest mCaptureRequest = captureRequestBuilder.build();
+            mSession.capture(mCaptureRequest, mSessionCaptureCallback, mHandler);
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Bitmap getRotatedBitmap(Bitmap bitmap, int degrees) throws Exception {
+        if(bitmap == null) return null;
+        if (degrees == 0) return bitmap;
+
+        Matrix m = new Matrix();
+        m.setRotate(degrees, (float) bitmap.getWidth() / 2, (float) bitmap.getHeight() / 2);
+
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), m, true);
+    }
+
+
+
+    /**
+     * Unlock the focus. This method should be called when still image capture sequence is
+     * finished.
+     */
+    private void unlockFocus() {
+        try {
+            // Reset the auto-focus trigger
+            mPreviewBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER,
+                    CameraMetadata.CONTROL_AF_TRIGGER_CANCEL);
+            mPreviewBuilder.set(CaptureRequest.CONTROL_AE_MODE,
+                    CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
+            mSession.capture(mPreviewBuilder.build(), mSessionCaptureCallback,
+                    mHandler);
+            // After this, the camera will go back to the normal state of preview.
+            mSession.setRepeatingRequest(mPreviewBuilder.build(), mSessionCaptureCallback,
+                    mHandler);
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    //출처 - https://codeday.me/ko/qa/20190310/39556.html
+    /**
+     * A copy of the Android internals  insertImage method, this method populates the
+     * meta data with DATE_ADDED and DATE_TAKEN. This fixes a common problem where media
+     * that is inserted manually gets saved at the end of the gallery (because date is not populated).
+     * @see android.provider.MediaStore.Images.Media#insertImage(ContentResolver, Bitmap, String, String)
+     */
+    public static final String insertImage(ContentResolver cr,
+                                           Bitmap source,
+                                           String title,
+                                           String description) {
+
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.TITLE, title);
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, title);
+        values.put(MediaStore.Images.Media.DESCRIPTION, description);
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+        // Add the date meta data to ensure the image is added at the front of the gallery
+        values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis());
+        values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis());
+
+        Uri url = null;
+        String stringUrl = null;    /* value to be returned */
+
+        try {
+            url = cr.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+
+            if (source != null) {
+                OutputStream imageOut = cr.openOutputStream(url);
+                try {
+                    source.compress(Bitmap.CompressFormat.JPEG, 50, imageOut);
+                } finally {
+                    imageOut.close();
+                }
+
+            } else {
+                cr.delete(url, null, null);
+                url = null;
+            }
+        } catch (Exception e) {
+            if (url != null) {
+                cr.delete(url, null, null);
+                url = null;
+            }
+        }
+
+        if (url != null) {
+            stringUrl = url.toString();
+        }
+
+        return stringUrl;
+    }
+
+
+    private class SaveImageTask extends AsyncTask<Bitmap, Void, Void> {
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            Toast.makeText(MainActivity.this, "사진을 저장하였습니다.", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        protected Void doInBackground(Bitmap... data) {
+
+            Bitmap bitmap = null;
+            try {
+                bitmap = getRotatedBitmap(data[0], mDeviceRotation);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            insertImage(getContentResolver(), bitmap, ""+System.currentTimeMillis(), "");
+
+            return null;
+        }
+
+    }
+
+
+    // 출처 https://stackoverflow.com/a/43516672
+    private void setAspectRatioTextureView(int ResolutionWidth , int ResolutionHeight )
+    {
+        if(ResolutionWidth > ResolutionHeight){
+            int newWidth = mDSI_width;
+            int newHeight = ((mDSI_width * ResolutionWidth)/ResolutionHeight);
+            updateTextureViewSize(newWidth,newHeight);
+
+        }else {
+            int newWidth = mDSI_width;
+            int newHeight = ((mDSI_width * ResolutionHeight)/ResolutionWidth);
+            updateTextureViewSize(newWidth,newHeight);
+        }
+
+    }
+
+    private void updateTextureViewSize(int viewWidth, int viewHeight) {
+        Log.d("@@@", "TextureView Width : " + viewWidth + " TextureView Height : " + viewHeight);
+        mSurfaceView.setLayoutParams(new FrameLayout.LayoutParams(viewWidth, viewHeight));
     }
 
 
@@ -472,11 +749,11 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
                 //화면 출력
                 k = 0;
                 for (k = 0; k<arr_split_index ; k++){
-                    mHandler.post(new msgUpdate(result_song[k], result_artist[k]));
+                    mHandler2.post(new msgUpdate(result_song[k], result_artist[k]));
                 }
 
                // for (int k = 0; k<read_Result.length ; k++){
-                    //mHandler.post(new msgUpdate(read_Result[k]));
+                    //mHandler2.post(new msgUpdate(read_Result[k]));
                 //}
 
                 msgTV.setText(null);
