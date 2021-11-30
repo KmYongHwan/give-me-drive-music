@@ -129,7 +129,6 @@ public class location_time_velocity extends AppCompatActivity implements SensorE
                     }
                 })
                 .start();
-
     }
 
     public void showToast(String message) {

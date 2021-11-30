@@ -551,7 +551,7 @@ public class MainActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            insertImage(getContentResolver(), bitmap, ""+System.currentTimeMillis(), "");
+            insertImage(getContentResolver(), bitmap, "drive"/*+System.currentTimeMillis()*/, "");
 
             return null;
         }
