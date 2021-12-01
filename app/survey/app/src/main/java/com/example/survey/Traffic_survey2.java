@@ -30,7 +30,7 @@ public class Traffic_survey2 extends AppCompatActivity {
     private RadioGroup radioGroup;
     private DatabaseReference mPostReference;
 
-    Long que = 17L;
+    Long que = 18L;
     String ans;
 
     static ArrayList<String> arrayIndex =  new ArrayList<String>();
