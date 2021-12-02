@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
     private Handler mHandler2;
     Socket socket;
     Socket socket_image;
-    private String ip = "192.168.0.2";
+    private String ip = "58.76.178.181";
     private int port = 5050;
     private int port_image = 8000;
     EditText et;
@@ -302,10 +302,6 @@ public class MainActivity extends AppCompatActivity {
                 intent_result.putExtra("result_song", result_song);
                 intent_result.putExtra("result_artist", result_artist);
                 startActivity(intent_result);
-
-
-
-
             }
         });
     }
@@ -640,7 +636,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             if (Build.VERSION.SDK_INT >= 29){
-                insertImage(getContentResolver(), bitmap, "drive", "");
+                insertImage(getContentResolver(), bitmap, "driver", "");
             }
             else{
                 saveBitmapToJpg(bitmap, "driver");
@@ -824,6 +820,7 @@ public class MainActivity extends AppCompatActivity {
                 //int port = 8000;   //int port = 9999;
                 //String FileName = "/storage/self/primary/Pictures/image.jpg";              //String FileName = "test.mp4";
                 String FileName = "/storage/self/primary/Pictures/driver.jpg";
+                Log.d("test", "filename?" + FileName);
 
 
                 File file = new File(FileName);

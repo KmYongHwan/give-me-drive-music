@@ -13,13 +13,39 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import com.google.android.youtube.player.YouTubeBaseActivity;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerView;
+import com.google.api.client.googleapis.json.GoogleJsonResponseException;
+import com.google.api.client.http.HttpRequest;
+import com.google.api.client.http.HttpRequestInitializer;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.services.youtube.YouTube;
+import com.google.api.services.youtube.model.SearchListResponse;
+import com.google.api.services.youtube.model.SearchResult;
+
 public class Recommend_result extends AppCompatActivity {
     Toolbar toolbar;
-    TextView text_view;
+    ListView listView;
+
+    String[] result_song;
+    String[] result_artist;
+    static ArrayList<String> result = new ArrayList<>();
+    ArrayAdapter<String> arrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,15 +56,16 @@ public class Recommend_result extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        text_view = (TextView) findViewById(R.id.tv_result);
         Intent intent_result = getIntent();
         Log.d("thread", "Intent is : " + intent_result);
 
         //String result = intent_result.getExtras().getString("test_str");
         //text_view.setText(result);
-        String[] result_song = intent_result.getExtras().getStringArray("result_song");
 
-        String[] result_artist = intent_result.getExtras().getStringArray("result_artist");
+        result_song = intent_result.getExtras().getStringArray("result_song");
+        result_artist = intent_result.getExtras().getStringArray("result_artist");
+
+        /*
         Log.d("thread", "result_song is : ");
         for (int i = 0; i < result_song.length ; i++)
         {
@@ -48,11 +75,43 @@ public class Recommend_result extends AppCompatActivity {
         for (int j = 0; j < result_artist.length ; j++)
         {
             Log.d("thread", result_artist[j]);
-        }
+        }*/
+
+
+        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
+        ListView listView = (ListView) findViewById(R.id.db_list_view);
+        listView.setAdapter(arrayAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                String[] tempData = result.get(position).split("\\s+");
+                Log.d("test", Arrays.toString(tempData));
+
+                Intent intent_result1 = new Intent(getApplicationContext(), YoutubeActivity.class);
+                intent_result1.putExtra("result", tempData);
+                startActivity(intent_result1);
+            }
+        });
+
+        getArrayData();
+        //listView.setOnItemClickListener(onClickListener);
+        //listView.setOnItemLongClickListener(longClickListener);
+
+
+        //ArrayList<String> result_s = new ArrayList<>(Arrays.asList(result_song));
+        //ArrayList<String> result_a = new ArrayList<>(Arrays.asList(result_artist));
+
+
+    }
+
+    public void getArrayData(){
+        result.clear();
         for (int k = 0 ; k < result_song.length; k++)
         {
-            text_view.setText(text_view.getText().toString()+ result_song[k] + ", " + result_artist[k] + "\n");
+            String result_1 = result_song[k] + ",\t" + result_artist[k];
+            result.add(result_1);
         }
+        arrayAdapter.addAll(result);
     }
 
     @Override
