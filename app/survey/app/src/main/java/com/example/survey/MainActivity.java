@@ -458,8 +458,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         if(location.getProvider().equals(LocationManager.GPS_PROVIDER)) {
             latitude = location.getLatitude();
             longitude = location.getLongitude();
-            tvGpsLongitude.setText(": " + Double.toString(latitude));
-            tvGpsLongitude.setText(": " + Double.toString(longitude));
+            //tvGpsLongitude.setText(": " + Double.toString(latitude));
+            //tvGpsLongitude.setText(": " + Double.toString(longitude));
             last_latitude = Double.toString(latitude);
             last_longitude = Double.toString(longitude);
             Log.d("test", "latitude is : " + Double.toString(latitude));

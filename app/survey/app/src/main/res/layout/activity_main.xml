@@ -98,7 +98,7 @@
         android:id="@+id/tv_velocity"
         android:layout_width="158dp"
         android:layout_height="43dp"
-        android:text="50"
+        android:text="0.1"
         android:textSize="25dp"
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
