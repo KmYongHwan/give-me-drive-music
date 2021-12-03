@@ -217,7 +217,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
         setContentView(R.layout.activity_main);
 
-        Button button = findViewById(R.id.take_photo);
+        ImageButton button = findViewById(R.id.take_photo);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
