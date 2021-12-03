@@ -31,6 +31,9 @@ import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.CaptureResult;
 import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.StreamConfigurationMap;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.media.ExifInterface;
 import android.media.Image;
 import android.media.ImageReader;
@@ -104,7 +107,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import android.graphics.Matrix;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LocationListener {
 
     private SurfaceView mSurfaceView;
     private SurfaceHolder mSurfaceViewHolder;
@@ -175,6 +178,34 @@ public class MainActivity extends AppCompatActivity {
 
     private Button btintent;
 
+    //============================gps관련 추가 ===================================
+
+    LocationManager locationManager;
+    Location mLastlocation = null;
+    List<String> listProviders;
+    String TAG = "LocationProvider";
+
+    TextView tvGpsEnable, tvGpsLatitude, tvGpsLongitude;
+
+    int on = 1;
+
+    TextView Speed;
+    double speed;
+
+    boolean isNetworkEnabled = false;
+
+    // 최소 GPS 정보 업데이트 거리 10미터
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10;
+
+    // 최소 GPS 정보 업데이트 시간 밀리세컨이므로 1분
+    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1;
+    Location location;
+    String last_latitude = "";
+    String last_longitude = "";
+    String last_speed = "0";
+
+    //==========================================================================
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -243,11 +274,10 @@ public class MainActivity extends AppCompatActivity {
         msgTV = (TextView)findViewById(R.id.textView);
 
 
-
         btRecom.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "추천 눌렸음", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "추천 진행중.......", Toast.LENGTH_SHORT).show();
 
                 db_data = arrayData;
                 db_data_string = "";
@@ -304,7 +334,182 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent_result);
             }
         });
+
+
+        //=======================gps관련============================
+
+
+        //setContentView(R.layout.activity_main);
+        //tvGpsEnable = (TextView) findViewById(R.id.tvGpsEnable);
+        //tvGpsLatitude = (TextView) findViewById(R.id.GpsLatitude);
+        //tvGpsLongitude = (TextView) findViewById(R.id.GpsLongitude);
+        Speed = (TextView) findViewById(R.id.tv_velocity);
+
+        double latitude = 0;
+        double longitude = 0;
+
+
+
+        //double latitude = current_location.getLatitude();
+        //double longitude = current_location.getLongitude();
+        //tvGpsLongitude.setText(": " + Double.toString(latitude));
+        //tvGpsLongitude.setText(": " + Double.toString(longitude));
+
+
+        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            return ;
+        }
+
+        locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+
+
+
+        Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+        if(lastKnownLocation != null) {
+            double lng = lastKnownLocation.getLongitude();
+            double lat = lastKnownLocation.getLatitude();
+            Log.d(TAG, "longitude=" +lng+ ", latitude=" + lat);
+            last_latitude = Double.toString(lat);
+            last_longitude = Double.toString(lng);
+            //tvGpsLatitude.setText(Double.toString(lat));
+            //tvGpsLongitude.setText(Double.toString(lng));
+        }
+
+        listProviders = locationManager.getAllProviders();
+        boolean [] isEnable = new boolean[3];
+        for(int i=0; i< listProviders.size(); i++) {
+            if(listProviders.get(i).equals(LocationManager.GPS_PROVIDER)) {
+                isEnable[0] = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+                //tvGpsEnable.setText(": "+ String.valueOf(isEnable[0]));
+
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,0, (android.location.LocationListener)this);
+            }
+        }
+
+        Log.d(TAG, listProviders.get(0) + '/' + String.valueOf(isEnable[0]));
+
+
+
+
+        //==============첫 실행시 위도경도 초기화=============================================
+        isNetworkEnabled = locationManager.isProviderEnabled(
+                LocationManager.NETWORK_PROVIDER);
+
+
+        if (isNetworkEnabled) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, (LocationListener) this);
+
+            if (locationManager != null) {
+                location = locationManager
+                        .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                if (location != null) {
+                    // 위도 경도 저장
+                    latitude = location.getLatitude();
+                    longitude = location.getLongitude();
+                }
+            }
+        }
+        //tvGpsLongitude.setText(": " + Double.toString(latitude));
+       // tvGpsLongitude.setText(": " + Double.toString(longitude));
+
+        String getSpeed = String.format("%.3f", location.getSpeed());
+
+        last_latitude = Double.toString(latitude);
+        last_longitude = Double.toString(longitude);
+
+        last_speed = getSpeed;
+        Log.d("test", "last_latitude : "+last_latitude);
+        Log.d("test", "last_longitude : "+last_longitude);
+        Log.d("test", "last_speed : "+ last_speed);
+
+
+
+        //=======================gps관련 끝===================================
     }
+
+    //=========================gps관련 추가 ===========================================
+    @Override
+    public void onProviderEnabled(String provider) {
+        if(ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,0, (LocationListener) this);
+    }
+
+    @Override
+    public void onLocationChanged(Location location){
+
+        double latitude = 0.0;
+        double longitude = 0.0;
+        Log.d("test", "is it executed?????===============================");
+
+        if(location.getProvider().equals(LocationManager.GPS_PROVIDER)) {
+            latitude = location.getLatitude();
+            longitude = location.getLongitude();
+            tvGpsLongitude.setText(": " + Double.toString(latitude));
+            tvGpsLongitude.setText(": " + Double.toString(longitude));
+            last_latitude = Double.toString(latitude);
+            last_longitude = Double.toString(longitude);
+            Log.d("test", "latitude is : " + Double.toString(latitude));
+            Log.d("test", "longitude is : " + Double.toString(longitude));
+            Log.d(TAG + "GPS: ", Double.toString(latitude) + '/' + Double.toString(longitude));
+        }
+
+        String getSpeed = String.format("%.3f", location.getSpeed());
+        last_speed = getSpeed;
+        Speed.setText(getSpeed);
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras){
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider){
+
+    }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION) &&
+                    ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
+                return;
+            } else{
+                ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
+                return;
+            }
+        }
+
+    }
+
+
+
+
+
+
+
+
+    //=========================gps관련 추가 끝===========================================
+
+
+
 
     @Override
     protected void onResume() {
@@ -312,6 +517,13 @@ public class MainActivity extends AppCompatActivity {
 
         mSensorManager.registerListener(deviceOrientation.getEventListener(), mAccelerometer, SensorManager.SENSOR_DELAY_UI);
         mSensorManager.registerListener(deviceOrientation.getEventListener(), mMagnetometer, SensorManager.SENSOR_DELAY_UI);
+
+        //gps관련 추가
+        if(ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            return;
+        }
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,0, (LocationListener) this);
+
     }
 
     @Override
@@ -319,6 +531,9 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
 
         mSensorManager.unregisterListener(deviceOrientation.getEventListener());
+
+        //gps관련 추가
+        locationManager.removeUpdates((LocationListener) this);
     }
 
     public void initSurfaceView() {
@@ -939,6 +1154,7 @@ public class MainActivity extends AppCompatActivity {
 
                 //out.println(sndMsg);//eclipse에 보낼 내용
                 out.println(sndMsg);//eclipse에 보낼 내용
+                out.println(last_latitude + " " + last_longitude + " " + last_speed);
                 sndMsg = "";
                 db_data_string = "";
                 db_data_mood_string = "";
