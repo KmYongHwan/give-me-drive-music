@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     Toolbar toolbar;
 
     private Button btRecom;
-    private Button btVoice;
+    private ImageButton btVoice;
     private TextView txVoice;
     private final int myVoiceCode = 1234;
 
@@ -467,7 +467,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             Log.d(TAG + "GPS: ", Double.toString(latitude) + '/' + Double.toString(longitude));
         }
 
-        String getSpeed = String.format("%.3f", location.getSpeed());
+        String getSpeed = String.format("%.3f", location.getSpeed() * 3.6);
         last_speed = getSpeed;
         Speed.setText(getSpeed);
     }
@@ -1299,7 +1299,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         if(VoiceMsg.indexOf("추천") > -1){
             //takePicture();
 
-            Toast.makeText(MainActivity.this, "추천 눌렸음", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "추천 진행중.......", Toast.LENGTH_SHORT).show();
 
             db_data = arrayData;
             db_data_string = "";

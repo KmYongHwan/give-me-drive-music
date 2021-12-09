@@ -16,7 +16,7 @@
             android:id="@+id/textView28"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Toolbar Title"
+            android:text="Survey Home"
             android:layout_gravity="center"
             android:textColor="#000000"
             android:textSize="15dp"
@@ -26,7 +26,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="설문에 대한 설명"
+        android:text="본인이 느끼는 감정들과 원하는 분위기를\n사실대로 응답해주셔야 정확한 추천이 가능합니다."
         android:textSize="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
