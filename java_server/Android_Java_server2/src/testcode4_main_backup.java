@@ -17,7 +17,7 @@ import org.json.simple.parser.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class testcode4_main {
+public class testcode4_main_backup {
 	//빠르기
 	public static final int fast =0;
 	public static final int slow =1;
@@ -54,7 +54,6 @@ public class testcode4_main {
 	public static final int frustrated		=9;
 	public static final int angry			=10;
 	public static final int tense			=11;
-	public static final int sleepy			=12;
 	//분위기 "annoying", "angry", "nervous", "sad", "bored", "sleepy", "calm", "peaceful", "relaxed", "pleased", "happy", "excited"
 	public static final int mood_annoying		=0;
 	public static final int mood_angry			=1;
@@ -72,24 +71,16 @@ public class testcode4_main {
 	public String Result_name = "";
 	public String Result_artist = "";
 	
-	
-	public String start_main(String[] result_of_str, String result_of_image, Double latitude, Double longitude, Double speed) {
+	//public static void main(String[] args) {
+	public String start_main() {
 		// TODO Auto-generated method stub
-		latitude = Math.floor(latitude*10000) / 10000.0;
-		longitude = Math.floor(longitude * 10000) / 10000.0;
-		String location_str = longitude.toString() + ", " + latitude.toString();
-		//System.out.println("location_str is :");
-		//System.out.println(location_str);
-		String roadaddr =null ;
 		
-		boolean is_empty = false;
+		
+		String roadaddr =null ;
 		///////////////////////////////////////// 위도와 경도 정보로 주소를 알아낸다. -naver maps reverse geocoder 사용
 		try {
-			System.out.println("//////////////////////////지도 api 시도////////////////////////////"); 
 			StringBuilder urlBuilder = new StringBuilder("https://naveropenapi.apigw.ntruss.com/map-reversegeocode/v2/gc"); 
-	        //urlBuilder.append("?" + URLEncoder.encode("coords","UTF-8") + "=" + URLEncoder.encode("127.0199, 37.4845", "UTF-8")); 
-	        urlBuilder.append("?" + URLEncoder.encode("coords","UTF-8") + "=" + URLEncoder.encode(location_str, "UTF-8"));
-	        //urlBuilder.append("?" + URLEncoder.encode("coords","UTF-8") + "=" + URLEncoder.encode("126.9251, 37.4952", "UTF-8")); 
+	        urlBuilder.append("?" + URLEncoder.encode("coords","UTF-8") + "=" + URLEncoder.encode("127.0199, 37.4845", "UTF-8")); 
 	        urlBuilder.append("&" + URLEncoder.encode("orders","UTF-8") + "=" + URLEncoder.encode("roadaddr", "UTF-8"));
 	        urlBuilder.append("&" + URLEncoder.encode("output","UTF-8") + "=" + URLEncoder.encode("json", "UTF-8")); 
 	        
@@ -128,45 +119,33 @@ public class testcode4_main {
 			
 	    	JSONParser jparser = new JSONParser();
 	    	JSONObject jobject = (JSONObject)jparser.parse(temp);   
-	    	//System.out.println("testcode4.main ----jobject");
-	    	//System.out.println(jobject);
 	    	//System.out.println("1. "+jobject);
 	    	JSONArray jarray = (JSONArray) jobject.get("results");
-	    	//System.out.println("testcode4.main ---- jarray");
-	    	//System.out.println(jarray);
 	    	//System.out.println("2. "+jarray);
-	    	if (jarray.isEmpty())
-	    	{
-	    		System.out.println("현재 위치를 찾을 수 없습니다.");
-	    		is_empty = true;
-	    	}
-	    	else
-	    	{
-	    		JSONObject tempObject = (JSONObject)jarray.get(0);
-		    	JSONObject tempObject2 = (JSONObject)tempObject.get("region");
-				//System.out.println("3. "+tempObject2);
-				
-				JSONObject area = (JSONObject)tempObject2.get("area1");
-				//System.out.println("4. "+area);
-				
-				String area1 = (String)area.get("name");
-				//System.out.println("5. area1: "+area1);
-				
-				area = (JSONObject)tempObject2.get("area2");
-				String area2 = (String)area.get("name");
-				//System.out.println("6. area2: "+area2);
-				
-				area = (JSONObject)tempObject2.get("area3");
-				String area3 = (String)area.get("name");
-				//System.out.println("6. area3: "+area3);
-				
-				tempObject2 = (JSONObject)tempObject.get("land");
-				//System.out.println("7. land: " +tempObject2);
-				
-				roadaddr = (String)tempObject2.get("name");
-				//System.out.println("8. roadaddr: " + roadaddr);
-	    	}
 	    	
+	    	JSONObject tempObject = (JSONObject)jarray.get(0);
+	    	JSONObject tempObject2 = (JSONObject)tempObject.get("region");
+			//System.out.println("3. "+tempObject2);
+			
+			JSONObject area = (JSONObject)tempObject2.get("area1");
+			//System.out.println("4. "+area);
+			
+			String area1 = (String)area.get("name");
+			//System.out.println("5. area1: "+area1);
+			
+			area = (JSONObject)tempObject2.get("area2");
+			String area2 = (String)area.get("name");
+			//System.out.println("6. area2: "+area2);
+			
+			area = (JSONObject)tempObject2.get("area3");
+			String area3 = (String)area.get("name");
+			//System.out.println("6. area3: "+area3);
+			
+			tempObject2 = (JSONObject)tempObject.get("land");
+			//System.out.println("7. land: " +tempObject2);
+			
+			roadaddr = (String)tempObject2.get("name");
+			//System.out.println("8. roadaddr: " + roadaddr);
 			
 		/////////////////////////////////////////////////////////////////////////////////	
 		}catch (IOException r)
@@ -178,63 +157,47 @@ public class testcode4_main {
 		}
 		
 		
-				
+		
+		
 		//현재 감정과 감정에 따른 분위기가 저장될 벡터공간
 		Vector<String> feeling = new Vector<String>();
 		Vector<String> mood = new Vector<String>(); 
 		
-		// 0~4
 		//[설문조사 결과]주변환경(계절, 시간대, 날씨, 교통량-을 대변하는 빠르기)에 따른 감정이 저장된 공간
 		Vector<String> season_feeling = new Vector<String>(); 
 		
-		//season_feeling.add(spring, "happy");
-		//season_feeling.add(summer, "tired");
-		//season_feeling.add(fall, "calm");
-		//season_feeling.add(winter, "delighted");
-		
-		season_feeling.add(spring, result_of_str[8]);
-		season_feeling.add(summer, result_of_str[9]);
-		season_feeling.add(fall, result_of_str[10]);
-		season_feeling.add(winter, result_of_str[11]);
 		
 		
-		Vector<String> time_feeling = new Vector<String>();
-		//time_feeling.add(morning, "tired");
-		//time_feeling.add(launch, "relaxed");
-		//time_feeling.add(afternoon, "tired");
-		//time_feeling.add(night, "happy");
-		//time_feeling.add(dawn, "calm");
+		season_feeling.add(spring, "happy");
+		season_feeling.add(summer, "tired");
+		season_feeling.add(fall, "calm");
+		season_feeling.add(winter, "delighted");
 		
-		time_feeling.add(morning, result_of_str[12]);
+		
+		
+		
+		Vector<String>time_feeling = new Vector<String>();
+		time_feeling.add(morning, "tired");
 		time_feeling.add(launch, "relaxed");
-		time_feeling.add(afternoon, result_of_str[13]);
-		time_feeling.add(night, result_of_str[14]);
-		time_feeling.add(dawn, result_of_str[15]);
+		time_feeling.add(afternoon, "tired");
+		time_feeling.add(night, "happy");
+		time_feeling.add(dawn, "calm");
 		
 		Vector<String>weather_feeling = new Vector<String>();
-		//weather_feeling.add(rain, "calm");
-		//weather_feeling.add(sunny, "happy");
-		//weather_feeling.add(cloudy, "depressed");
-		//weather_feeling.add(thunder, "tense");
-		//weather_feeling.add(snow, "delighted");
-		//weather_feeling.add(hot, "tired");
-		//weather_feeling.add(cold, "calm");
-		//weather_feeling.add(mid, "relaxed");
-		
-		weather_feeling.add(rain, result_of_str[0]);
-		weather_feeling.add(sunny, result_of_str[1]);
-		weather_feeling.add(cloudy, result_of_str[2]);
-		weather_feeling.add(thunder, result_of_str[3]);
-		weather_feeling.add(snow, result_of_str[4]);
-		weather_feeling.add(hot, result_of_str[5]);
-		weather_feeling.add(cold, result_of_str[6]);
-		weather_feeling.add(mid, result_of_str[7]);
+		weather_feeling.add(rain, "calm");
+		weather_feeling.add(sunny, "happy");
+		weather_feeling.add(cloudy, "depressed");
+		weather_feeling.add(thunder, "tense");
+		weather_feeling.add(snow, "delighted");
+		weather_feeling.add(hot, "tired");
+		weather_feeling.add(cold, "calm");
+		weather_feeling.add(mid, "relaxed");
 		
 		Vector<String>velocity_feeling = new Vector<String>();
-		velocity_feeling.add(fast, result_of_str[18]);
-		velocity_feeling.add(slow, result_of_str[19]);
+		velocity_feeling.add(fast, "excited");
+		velocity_feeling.add(slow, "tired");
 		
-		//주변환경 측정자료가 저장된 공간/////////////////////////////////////////////////////////////////////////////
+		//주변환경 측정자료가 저장된 공간//////////////////////////////////////////////////////////////////////////////여기 날짜 시간 정리하기
 		
 		Date date = new Date();
 		
@@ -245,17 +208,15 @@ public class testcode4_main {
 		int now = Integer.parseInt(hour.format(date));
 		
 		String season = null;
-		boolean sleepy_m = false, sleepy_h=false;
-		
 		switch(mon) {
 		case 12:
 		case 1:
 		case 2:
 			season = "winter";
 			break;
-		case 4:
-		case 5:sleepy_m = true;
 		case 3:
+		case 4:
+		case 5:
 			season = "spring";
 			break;
 		case 6:
@@ -267,111 +228,53 @@ public class testcode4_main {
 			default: season = "fall";
 		}
 		
-		if((now>=2 && now<=5)|| (now>=12 && now<=15)) sleepy_h=true;
-		
-		if(sleepy_m) feeling.add("sleepy");
-		if(sleepy_h) feeling.add("sleepy");
+		 
 		
 		Vector<String> weather = new Vector<String>();
-		//String person = "angry";
-		/*
-		String person = result_of_image;
-		if (person == null) {
-			person = "happy";
-		}*/
-		String person;
-		if(result_of_image.isEmpty()) {
-			//가끔, 얼굴 api가 비정상 작동할 경우, happy로 대체.
-			person = "happy";
-		}
-		else {
-			person = result_of_image;
-		}
-		
+		String person = "angry";
 		String v_a = "bored";
 		
 		testcode4_methods tools = new testcode4_methods();
 		
-		//tools.get_weather_api(weather, 37.4845, 127.0199);  //위도latitude 경도longitude 
-		tools.get_weather_api(weather, latitude, longitude);  //위도latitude 경도longitude 
+		//System.out.println("짠");
+		tools.get_weather_api(weather, 37.4845, 127.0199);  //위도latitude 경도longitude 
+		//System.out.println("짠");
 		
-		//int road_type = tools.get_traffic_info(roadaddr, 37.4845, 127.0199);
-		if (is_empty) {
-			System.out.println("현재 위치를 찾을 수 없어 교통량을 알 수 없습니다.");
-		}
-		else {
-			int road_type = tools.get_traffic_info(roadaddr, latitude, longitude);
-			
-			double velocity = speed; //
-			if (velocity == 0) {
-				velocity = 40;
-			}
-			tools.get_traffic(feeling, velocity, velocity_feeling, road_type);
-		}
+		int road_type = tools.get_traffic_info(roadaddr, 37.4845, 127.0199);
 		
+		double velocity = 70 ; //안드로이드 스튜디오에서 가속도 센서를 적분한 값
+		tools.get_traffic(feeling, velocity, velocity_feeling, road_type);
 		
 		//System.out.println("velocity: "+vel);
 		
-		//[설문조사 결과]감정과 그에 따른 분위기가 저장된 공간 (어떤 감정일때 어떤 노래를 듣고 싶나)
+		//[설문조사 결과]감정과 그에 따른 분위기가 저장된 공간
 		Vector<String> feeling_to_mood = new Vector<String>();
-		
-		
-		
-		//feeling_to_mood.add(excited, "excited");
-		//feeling_to_mood.add(delighted, "relaxed");
-		//feeling_to_mood.add(happy, "happy");
-		//feeling_to_mood.add(content, "pleased");
-		//feeling_to_mood.add(relaxed, "calm");
-		//feeling_to_mood.add(calm, "sad");
-		//feeling_to_mood.add(tired, "excited");
-		//feeling_to_mood.add(bored, "excited");
-		//feeling_to_mood.add(depressed, "peaceful");
-		//feeling_to_mood.add(frustrated, "angry");
-		//feeling_to_mood.add(angry, "nervous");
-		//feeling_to_mood.add(tense, "calm");
-		
-		//feeling_to_mood.add(sleepy, "excited");
-		
-		feeling_to_mood.add(excited, result_of_str[20]);
-		feeling_to_mood.add(delighted, result_of_str[21]);
-		feeling_to_mood.add(happy, result_of_str[22]);
-		feeling_to_mood.add(content, result_of_str[23]);
-		feeling_to_mood.add(relaxed, result_of_str[24]);
-		feeling_to_mood.add(calm, result_of_str[25]);
-		feeling_to_mood.add(tired, result_of_str[26]);
-		feeling_to_mood.add(bored, result_of_str[27]);
-		feeling_to_mood.add(depressed, result_of_str[28]);
-		feeling_to_mood.add(frustrated, result_of_str[29]);
-		feeling_to_mood.add(angry, result_of_str[30]);
-		feeling_to_mood.add(tense, result_of_str[31]);
-		
-		feeling_to_mood.add(sleepy, "excited");
+		feeling_to_mood.add(excited, "excited");
+		feeling_to_mood.add(delighted, "relaxed");
+		feeling_to_mood.add(happy, "happy");
+		feeling_to_mood.add(content, "pleased");
+		feeling_to_mood.add(relaxed, "calm");
+		feeling_to_mood.add(calm, "sad");
+		feeling_to_mood.add(tired, "excited");
+		feeling_to_mood.add(bored, "excited");
+		feeling_to_mood.add(depressed, "peaceful");
+		feeling_to_mood.add(frustrated, "angry");
+		feeling_to_mood.add(angry, "nervous");
+		feeling_to_mood.add(tense, "calm");
 		
 		
 		// 측정된 주변환경 정보를 감정정보로 변환한다. -> feeling에 저장
 		tools.get_season(feeling, season, season_feeling);
-		//System.out.println("after get_season, feeling : ");
-		//System.out.println(feeling);
 		tools.get_time(feeling, now, time_feeling);
-		//System.out.println("after get_time, feeling : ");
-		//System.out.println(feeling);
 		tools.get_whether(feeling, weather, weather_feeling);
-		//System.out.println("after get_season, feeling : ");
-		//System.out.println(feeling);
 		feeling.add(person);
 		feeling.add(v_a);
 		
 		//감정정보를 분위기 정보로 변환한다. -> mood에 저장
-		//System.out.println("feeling : ");
-		//System.out.println(feeling);
-		//System.out.println("mood : ");
-		//System.out.println(mood);
-		//System.out.println("feeling_to_mood : ");
-		//System.out.println(feeling_to_mood);
 		tools.change_music(feeling, mood, feeling_to_mood);
 		
-		//System.out.println(feeling);
-		//System.out.println(mood);
+		System.out.println(feeling);
+		System.out.println(mood);
 		
 		Vector<Integer> music = new Vector<Integer>(Arrays.asList(0,0,0,0,0,0,0,0,0,0,0,0));
 		
@@ -383,7 +286,7 @@ public class testcode4_main {
 			music.set(index, music.get(index)+1);
 		}
 		
-		//System.out.println(music);
+		System.out.println(music);
 		
 		String list[]= {"annoying", "angry", "nervous", "sad", "bored", "sleepy", "calm", "peaceful", "relaxed", "pleased", "happy", "excited"};
 		int temps[] = {0,0,0,0,0,0,0,0,0,0,0,0};
@@ -406,7 +309,7 @@ public class testcode4_main {
 			result_mood.add(list[j-1]);
 		}
 		
-		//System.out.println(result_mood);
+		System.out.println(result_mood);
 		
 		for(int i=0; i<result_mood.size(); i++)
 		{
@@ -499,6 +402,7 @@ public class testcode4_main {
 				e.printStackTrace();
 			}
 		}
+		
 		
 		return Result_name + Result_artist;
 		 

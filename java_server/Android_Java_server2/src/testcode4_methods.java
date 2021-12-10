@@ -171,8 +171,8 @@ public class testcode4_methods {
 			rd.close();
         
 			conn.disconnect();
-			System.out.println(sb);
-			System.out.println();
+			//System.out.println(sb);
+			//System.out.println();
 			
 			String temp = sb.toString();
 		       
@@ -217,7 +217,12 @@ public class testcode4_methods {
 	    			   if(fcstVal.compareTo("0")!=0) weather.add("thunder");
 	    		   }else if(category.compareTo("T1H")==0)
 	    		   {
-	    			   int val = Integer.parseInt(fcstVal);
+	    			  // System.out.println("11111111111");
+	    			   //System.out.println(fcstVal);
+	    			   double val = Double.parseDouble(fcstVal);
+	    			   //int val = Integer.parseInt(fcstVal);
+	    			  // System.out.println("22222222222");
+	    			   
 	    			   if(val < 15) weather.add("cold");
 	    			   else if(val<25) weather.add("mid");
 	    			   else weather.add("hot");
@@ -269,6 +274,11 @@ public class testcode4_methods {
 	
 	void change_music(Vector<String> feeling, Vector<String> mood, Vector<String> feeling_to_mood)
 	{
+		//System.out.println("feeling.get(0)");
+		//System.out.println(feeling.get(6));
+		//System.out.println("executing==========================");
+		//System.out.println(feeling.get(6).compareTo("excited"));
+		//System.out.println("finished==========================");
 		for(int i=0; i<feeling.size(); i++)
 		{
 			if((feeling.get(i)).compareTo("excited")==0) 		mood.add(feeling_to_mood.get(excited));
@@ -333,8 +343,8 @@ public class testcode4_methods {
 			rd.close();
         
 			conn.disconnect();
-			System.out.println("//////////////////////////////////////////////////////////");
-			System.out.println(sb);
+			//System.out.println("//////////////////////////////////////////////////////////");
+			//System.out.println(sb);
 			//System.out.println();
 			
 			String temp = sb.toString();
@@ -342,10 +352,10 @@ public class testcode4_methods {
 			
 	    	JSONParser jparser = new JSONParser();
 	    	JSONObject jobject = (JSONObject) jparser.parse(temp);
-	    	System.out.println("1. jobject: " + jobject);
+	    	//System.out.println("1. jobject: " + jobject);
 	    	jobject = (JSONObject)jobject.get("body");
 	    	JSONArray jarray = (JSONArray) jobject.get("items");
-	    	System.out.println("2. jarray: "+ jarray);
+	    	//System.out.println("2. jarray: "+ jarray);
 	    	
 	    	int n=0;
 	    	double sum=0;

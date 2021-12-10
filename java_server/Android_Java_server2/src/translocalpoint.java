@@ -72,8 +72,8 @@ public class translocalpoint {
 		   ans.x = (int)(x1 + 1.5);
 		   ans.y = (int)(y1 + 1.5);
 		   
-		   System.out.println(ans.x);
-		   System.out.println(ans.y);
+		   //System.out.println(ans.x);
+		   //System.out.println(ans.y);
 		   
 		   return ans;
 	   }

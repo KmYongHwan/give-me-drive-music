@@ -49,8 +49,8 @@ public class weather_api_test {
 			rd.close();
         
 			conn.disconnect();
-			System.out.println(sb);
-			System.out.println();
+			//System.out.println(sb);
+			//System.out.println();
         
 		
 		
